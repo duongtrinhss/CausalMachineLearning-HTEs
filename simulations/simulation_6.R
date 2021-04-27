@@ -4,7 +4,7 @@
 
 simulation_6 <- function(d){
   # Generate training sample
-  n <- 1000
+  n <- 200
   sigma <- 1
   
   ## Covariates X
@@ -41,9 +41,10 @@ simulation_6 <- function(d){
   tauhat_cf <- CATE_CausalForest(Y,W,X,X_test)
   print("XLearner")
   tauhat_xl <- CATE_XLearner(Y,W,X,X_test)
-  print("MomGrf")
-  tauhat_mom <- CATE_MomGrf(Y,W,X,X_test)  
-  tau_all <- data.frame(true_effect,tauhat_pl,tauhat_ct,tauhat_cf,tauhat_xl,tauhat_mom)
+  print("DRLearner")
+  tauhat_dr <- CATE_DRLearner(Y,W,X,X_test)
+  
+  tau_all <- data.frame(true_effect, tauhat_pl,tauhat_ct,tauhat_cf,tauhat_xl,tauhat_dr)
   
   return(tau_all)
 }

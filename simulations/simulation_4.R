@@ -14,14 +14,14 @@ simulation_4 <- function(d){
   V <- I(d)
   #X <- rmatnorm(s=1,Mean.mat,U,V)  # features
   X <- rmatrixnorm(n=1,mean=Mean_mat,U=U,V=V)
-  ## Propensity function: e(x) = 0.5 - constant
-  W <-  rbinom(n, 1, 0.01)
+  ## Propensity function: e(x) = 0.1 - constant
+  W <-  rbinom(n, 1, 0.1)
   
   ## Mean effect function: 
   mean_effect <- function(x){
     save_the_seed_1 <- .Random.seed
     set.seed(208) # To maintain through simulations   
-    b <- runif(d, -5, 5)
+    b <- runif(d, -1, 1)
     .Random.seed <<- save_the_seed_1
     
     return(x%*%b)
@@ -58,10 +58,10 @@ simulation_4 <- function(d){
   tauhat_cf <- CATE_CausalForest(Y,W,X,X_test)
   print("XLearner")
   tauhat_xl <- CATE_XLearner(Y,W,X,X_test)
-  print("MomGrf")
-  tauhat_mom <- CATE_MomGrf(Y,W,X,X_test)
+  print("DRLearner")
+  tauhat_dr <- CATE_DRLearner(Y,W,X,X_test)
   
-  tau_all <- data.frame(true_effect, tauhat_pl,tauhat_ct,tauhat_cf,tauhat_xl,tauhat_mom)
+  tau_all <- data.frame(true_effect, tauhat_pl,tauhat_ct,tauhat_cf,tauhat_xl,tauhat_dr)
   
   return(tau_all)
 }

@@ -30,6 +30,7 @@ simulation_3 <- function(d){
   X_test <-  matrix(runif(n_test * d, 0, 1), n_test, d)
   .Random.seed <<- save_the_seed
   X_test <- as.data.frame(X_test)
+  
   ## Calculate true CATE on testing data for evaluation purpose (calculating expected MSE)
   true_effect <-  apply(X_test, 1, treatment_effect)
   
@@ -42,9 +43,10 @@ simulation_3 <- function(d){
   tauhat_cf <- CATE_CausalForest(Y,W,X,X_test)
   print("XLearner")
   tauhat_xl <- CATE_XLearner(Y,W,X,X_test)
-  print("MomGrf")
-  tauhat_mom <- CATE_MomGrf(Y,W,X,X_test)  
-  tau_all <- data.frame(true_effect,tauhat_pl,tauhat_ct,tauhat_cf,tauhat_xl,tauhat_mom)
+  print("DRLearner")
+  tauhat_dr <- CATE_DRLearner(Y,W,X,X_test)
+  
+  tau_all <- data.frame(true_effect, tauhat_pl,tauhat_ct,tauhat_cf,tauhat_xl,tauhat_dr)
   
   return(tau_all)
 }
